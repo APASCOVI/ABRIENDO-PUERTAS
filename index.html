@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Encuesta – Proyecto Abriendo Puertas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Icono de pestaña -->
+  <link rel="icon" type="image/png" href="img/icono.png">
+  <meta name="theme-color" content="#063c7a">
+
+  <style>
+    :root{
+      --bg:#edf1fb; --card:#ffffff; --ink:#0b1220; --muted:#58627a;
+      --brand:#063c7a; --brand-2:#0a61b8; --border:#dfe5fb;
+      --note:#fffaf0; --note-border:#ffe0b2; --ok:#1976d2; --pdf:#d32f2f;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif
+    }
+    .wrap{max-width:1100px;margin:0 auto 40px;padding:10px}
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      box-shadow:0 8px 20px rgba(0,0,0,.06);
+      border:1px solid var(--border);
+      padding:16px 16px 26px;
+    }
+
+    /* CABECERA Y LOGOS */
+    header{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      border-bottom:3px solid var(--border);
+      padding-bottom:12px;
+      margin-bottom:10px;
+    }
+    .logos-top{
+      display:flex;
+      gap:20px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .logos-top img{
+      max-height:70px;
+      width:auto;
+      border-radius:8px;
+    }
+    .logo-apascovi{
+      max-height:120px;
+      width:auto;
+      margin-top:4px;
+    }
+    .titles{
+      text-align:center;
+      margin-top:6px;
+    }
+    .titles h1{
+      margin:0;
+      font-size:1.9rem;
+      color:#0b3a78;
+      letter-spacing:.3px
+    }
+    .titles h2{
+      margin:4px 0 2px;
+      font-size:1.2rem;
+      color:var(--brand-2);
+      font-weight:800
+    }
+    .titles p{
+      margin:2px 0;
+      font-size:1rem
+    }
+
+    /* CAJA DATOS + INSTRUCCIONES */
+    .box{
+      margin-top:10px;
+      padding:12px;
+      border-radius:12px;
+      background:#f5f7ff;
+      border:1px solid var(--border)
+    }
+    .box h3{
+      margin:0 0 8px;
+      font-size:1rem;
+      color:var(--brand)
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:10px 14px
+    }
+    label{
+      font-size:.9rem;
+      font-weight:700;
+      color:#0f1a33;
+      display:flex;
+      flex-direction:column;
+      gap:4px
+    }
+    select,input[type="text"],input[type="date"],textarea{
+      border:1px solid #cbd4f1;
+      border-radius:10px;
+      padding:8px 10px;
+      font-size:.98rem;
+      background:#fff;
+      width:100%
+    }
+    .hint{font-size:.82rem;color:#5a6170;margin-top:2px;font-weight:400}
+
+    .conociste-wrap{
+      margin-top:14px;
+      text-align:center;
+    }
+    .conociste-inner{
+      max-width:420px;
+      margin:0 auto;
+    }
+
+    .instructions{
+      margin-top:14px;
+      padding:12px;
+      border-radius:12px;
+      background:var(--note);
+      border:1px solid var(--note-border);
+      font-size:.98rem
+    }
+    .instructions ul{margin:6px 0 0 18px;padding:0}
+    .instructions li{margin:6px 0}
+    .instructions .emoji{font-size:1.9rem;}
+
+    /* BLOQUES Y PREGUNTAS */
+    .section-title{
+      margin:18px 0 6px;
+      font-size:1.05rem;
+      font-weight:800;
+      color:var(--brand)
+    }
+    .block{
+      margin-top:10px;
+      border-radius:16px;
+      padding:10px 10px 4px;
+    }
+    .block.b1{background:#e7f1ff;border:1px solid #8ab6ff;}
+    .block.b2{background:#e6ffee;border:1px solid #7fe8a1;}
+    .block.b3{background:#fff1f1;border:1px solid #ff8c8c;}
+    .block.b4{background:#fff5d9;border:1px solid #ffcb6b;}
+
+    .q{
+      margin:10px 0 12px;
+      padding:12px;
+      border-radius:14px;
+      background:#f6f8ff;
+      border:1px solid #d9dff5
+    }
+    .q-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap
+    }
+    .q-text{
+      margin:0;
+      font-size:1.05rem;
+      font-weight:700;
+      flex:1;
+      min-width:220px
+    }
+
+    .speak-btn{
+      border:none;
+      background:none;
+      cursor:pointer;
+      font-size:1.8rem;
+      line-height:1;
+      padding:4px 2px;
+    }
+
+    .faces{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:flex-start;
+      margin-top:8px
+    }
+    .opt{
+      display:inline-flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+      user-select:none
+    }
+    .opt input{display:none}
+    .face{
+      width:74px;
+      height:74px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:34px;
+      border:3px solid transparent;
+      background:#fff;
+      box-shadow:0 4px 10px rgba(0,0,0,.08);
+      transition:.12s transform,.12s box-shadow,.12s border-color
+    }
+    .opt:hover .face{
+      transform:translateY(-2px);
+      box-shadow:0 6px 14px rgba(0,0,0,.12)
+    }
+    .opt input:checked + .face{
+      border-color:#e53935;
+      box-shadow:0 0 0 4px rgba(229,57,53,.18)
+    }
+    .cap{
+      font-size:.83rem;
+      font-weight:700;
+      min-width:6.4rem;
+      text-align:center;
+      color:#102037
+    }
+
+    /* Colores de fondo de las caritas (como otras encuestas) */
+    .f1{background:#fecaca}  /* más negativo */
+    .f2{background:#fee1c7}
+    .f3{background:#fef3c7}
+    .f4{background:#c9f6d8}
+    .f5{background:#65f0a7}  /* más positivo */
+
+    .comments{margin-top:14px}
+    .comments h3{margin:0 0 8px;font-size:1.05rem;font-weight:800;color:#0b1220}
+    #obs{width:100%;min-height:160px;resize:vertical;background:#fff}
+
+    .buttons{
+      margin-top:20px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center
+    }
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:12px 22px;
+      min-width:220px;
+      font-weight:800;
+      font-size:1rem;
+      color:#fff;
+      cursor:pointer
+    }
+    .btn.pdf{background:var(--pdf)}
+    .btn.csv{background:var(--ok)}
+    .agradecimiento{
+      text-align:center;
+      margin-top:24px;
+      font-size:1.05rem;
+      font-weight:700;
+      color:#0b1220;
+    }
+
+    @media (max-width:640px){
+      .face{width:68px;height:68px;font-size:30px}
+      .btn{min-width:100%}
+    }
+    @media print{
+      .buttons{display:none}
+      .q{page-break-inside:avoid}
+      body{background:#fff}
+      .wrap{padding:0}
+      .card{box-shadow:none;border:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+
+      <!-- CABECERA -->
+      <header>
+        <div class="logos-top">
+          <img src="img/logo1.png" alt="Logo 1">
+          <img src="img/logo2.png" alt="Logo 2">
+          <img src="img/logo3.png" alt="Logo 3">
+        </div>
+        <img src="img/logo_APASCOVI.png" alt="Fundación APASCOVI" class="logo-apascovi">
+        <div class="titles">
+          <h1>Proyecto “Abriendo Puertas”</h1>
+          <h2>Itinerarios Integrados de Inserción Sociolaboral para Personas con Discapacidad</h2>
+          <p>Proyecto cofinanciado en un 40 % por el Fondo Social Europeo Plus (FSE+), Programa FSE+ 2021-2027, Objetivo Político 4, Prioridad 2, Objetivo Específico H.</p>
+        </div>
+      </header>
+
+      <!-- DATOS DEL PARTICIPANTE -->
+      <section class="box">
+        <h3>Datos del participante</h3>
+        <div class="grid">
+          <label>Código (4 caracteres)
+            <input type="text" id="codigo" maxlength="4" placeholder="Ej.: A123">
+          </label>
+
+          <label>Fecha
+            <input type="date" id="fecha">
+          </label>
+
+          <label>Años en el proyecto
+            <select id="anios">
+              <option value="">Selecciona…</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </label>
+
+          <label>Meses en el proyecto
+            <select id="meses">
+              <option value="">Selecciona…</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+            </select>
+            <span class="hint">Si has puesto 0 años, indica aquí los meses.</span>
+          </label>
+        </div>
+
+        <div class="conociste-wrap">
+          <div class="conociste-inner">
+            <label>¿Cómo nos conociste?</label>
+            <select id="conociste" onchange="mostrarOtros()">
+              <option value="">Selecciona…</option>
+              <option value="apascovi">Conozco la Fundación APASCOVI desde hace tiempo</option>
+              <option value="internet">Internet</option>
+              <option value="empleo">Servicios de Empleo</option>
+              <option value="sociales">Servicios Sociales</option>
+              <option value="conocidos">A través de conocidos</option>
+              <option value="otros">Otros</option>
+            </select>
+            <input type="text" id="otrosTexto" placeholder="Especifica" style="display:none;margin-top:8px;">
+          </div>
+        </div>
+      </section>
+
+      <!-- INSTRUCCIONES -->
+      <section class="instructions">
+        <strong>Instrucciones para completar la encuesta</strong>
+        <ul>
+          <li>Con esta encuesta queremos saber si estás contento/a con el Proyecto Abriendo Puertas. Tu opinión es muy importante.</li>
+          <li>Lee cada pregunta con calma.</li>
+          <li>Marca la opción con la que estés más de acuerdo.</li>
+          <li>No hay respuestas buenas o malas. Responde con sinceridad.</li>
+          <li>En las preguntas con caritas, elige la que mejor represente cómo te sientes:<br>
+            <span class="emoji">😀 🙂 😐 😕 😞</span>
+          </li>
+          <li>Pulsa el icono 🔊 para escuchar la pregunta.</li>
+          <li>Al final puedes escribir tus ideas o sugerencias.</li>
+        </ul>
+      </section>
+
+      <!-- BLOQUES Y PREGUNTAS -->
+      <!-- BLOQUE 1 -->
+      <p class="section-title">Aspectos organizativos</p>
+      <div class="block b1">
+
+        <!-- P1 -->
+        <section class="q" data-qid="q1">
+          <div class="q-head">
+            <p class="q-text">1. ¿Te parece apropiado el espacio y los medios utilizados?</p>
+            <button type="button" class="speak-btn" onclick="speak('q1')" aria-label="Escuchar pregunta 1">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt">
+              <input type="radio" name="q1" value="5" data-label="Muy satisfecho/a">
+              <span class="face f5">😀</span>
+              <span class="cap">Muy satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q1" value="4" data-label="Satisfecho/a">
+              <span class="face f4">🙂</span>
+              <span class="cap">Satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q1" value="3" data-label="Regular">
+              <span class="face f3">😐</span>
+              <span class="cap">Regular</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q1" value="2" data-label="Poco satisfecho/a">
+              <span class="face f2">😕</span>
+              <span class="cap">Poco satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q1" value="1" data-label="Nada satisfecho/a">
+              <span class="face f1">😞</span>
+              <span class="cap">Nada satisfecho/a</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- P2 -->
+        <section class="q" data-qid="q2">
+          <div class="q-head">
+            <p class="q-text">2. ¿Te parece adecuado el número de actividades y formaciones?</p>
+            <button type="button" class="speak-btn" onclick="speak('q2')" aria-label="Escuchar pregunta 2">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt">
+              <input type="radio" name="q2" value="5" data-label="Muy satisfecho/a">
+              <span class="face f5">😀</span>
+              <span class="cap">Muy satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q2" value="4" data-label="Satisfecho/a">
+              <span class="face f4">🙂</span>
+              <span class="cap">Satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q2" value="3" data-label="Regular">
+              <span class="face f3">😐</span>
+              <span class="cap">Regular</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q2" value="2" data-label="Poco satisfecho/a">
+              <span class="face f2">😕</span>
+              <span class="cap">Poco satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q2" value="1" data-label="Nada satisfecho/a">
+              <span class="face f1">😞</span>
+              <span class="cap">Nada satisfecho/a</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- P3 -->
+        <section class="q" data-qid="q3">
+          <div class="q-head">
+            <p class="q-text">3. ¿Están bien organizadas las actividades y formaciones?</p>
+            <button type="button" class="speak-btn" onclick="speak('q3')" aria-label="Escuchar pregunta 3">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt">
+              <input type="radio" name="q3" value="5" data-label="Muy satisfecho/a">
+              <span class="face f5">😀</span>
+              <span class="cap">Muy satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q3" value="4" data-label="Satisfecho/a">
+              <span class="face f4">🙂</span>
+              <span class="cap">Satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q3" value="3" data-label="Regular">
+              <span class="face f3">😐</span>
+              <span class="cap">Regular</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q3" value="2" data-label="Poco satisfecho/a">
+              <span class="face f2">😕</span>
+              <span class="cap">Poco satisfecho/a</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q3" value="1" data-label="Nada satisfecho/a">
+              <span class="face f1">😞</span>
+              <span class="cap">Nada satisfecho/a</span>
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <!-- BLOQUE 2 -->
+      <p class="section-title">Contenidos y metodología</p>
+      <div class="block b2">
+        <!-- P4 -->
+        <section class="q" data-qid="q4">
+          <div class="q-head">
+            <p class="q-text">4. ¿Te parecen útiles las actividades, formaciones y tareas que realizas?</p>
+            <button type="button" class="speak-btn" onclick="speak('q4')" aria-label="Escuchar pregunta 4">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt"><input type="radio" name="q4" value="5" data-label="Muy satisfecho/a"><span class="face f5">😀</span><span class="cap">Muy satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q4" value="4" data-label="Satisfecho/a"><span class="face f4">🙂</span><span class="cap">Satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q4" value="3" data-label="Regular"><span class="face f3">😐</span><span class="cap">Regular</span></label>
+            <label class="opt"><input type="radio" name="q4" value="2" data-label="Poco satisfecho/a"><span class="face f2">😕</span><span class="cap">Poco satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q4" value="1" data-label="Nada satisfecho/a"><span class="face f1">😞</span><span class="cap">Nada satisfecho/a</span></label>
+          </div>
+        </section>
+
+        <!-- P5 -->
+        <section class="q" data-qid="q5">
+          <div class="q-head">
+            <p class="q-text">5. ¿Puedes poner en práctica lo que has aprendido?</p>
+            <button type="button" class="speak-btn" onclick="speak('q5')" aria-label="Escuchar pregunta 5">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt"><input type="radio" name="q5" value="5" data-label="Muy satisfecho/a"><span class="face f5">😀</span><span class="cap">Muy satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q5" value="4" data-label="Satisfecho/a"><span class="face f4">🙂</span><span class="cap">Satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q5" value="3" data-label="Regular"><span class="face f3">😐</span><span class="cap">Regular</span></label>
+            <label class="opt"><input type="radio" name="q5" value="2" data-label="Poco satisfecho/a"><span class="face f2">😕</span><span class="cap">Poco satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q5" value="1" data-label="Nada satisfecho/a"><span class="face f1">😞</span><span class="cap">Nada satisfecho/a</span></label>
+          </div>
+        </section>
+
+        <!-- P6 -->
+        <section class="q" data-qid="q6">
+          <div class="q-head">
+            <p class="q-text">6. ¿Has mejorado tus habilidades para encontrar empleo?</p>
+            <button type="button" class="speak-btn" onclick="speak('q6')" aria-label="Escuchar pregunta 6">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt"><input type="radio" name="q6" value="5" data-label="Muy satisfecho/a"><span class="face f5">😀</span><span class="cap">Muy satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q6" value="4" data-label="Satisfecho/a"><span class="face f4">🙂</span><span class="cap">Satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q6" value="3" data-label="Regular"><span class="face f3">😐</span><span class="cap">Regular</span></label>
+            <label class="opt"><input type="radio" name="q6" value="2" data-label="Poco satisfecho/a"><span class="face f2">😕</span><span class="cap">Poco satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q6" value="1" data-label="Nada satisfecho/a"><span class="face f1">😞</span><span class="cap">Nada satisfecho/a</span></label>
+          </div>
+        </section>
+      </div>
+
+      <!-- BLOQUE 3 -->
+      <p class="section-title">Equipo profesional</p>
+      <div class="block b3">
+        <!-- P7 -->
+        <section class="q" data-qid="q7">
+          <div class="q-head">
+            <p class="q-text">7. ¿El equipo profesional te da una buena atención?</p>
+            <button type="button" class="speak-btn" onclick="speak('q7')" aria-label="Escuchar pregunta 7">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt"><input type="radio" name="q7" value="5" data-label="Muy satisfecho/a"><span class="face f5">😀</span><span class="cap">Muy satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q7" value="4" data-label="Satisfecho/a"><span class="face f4">🙂</span><span class="cap">Satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q7" value="3" data-label="Regular"><span class="face f3">😐</span><span class="cap">Regular</span></label>
+            <label class="opt"><input type="radio" name="q7" value="2" data-label="Poco satisfecho/a"><span class="face f2">😕</span><span class="cap">Poco satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q7" value="1" data-label="Nada satisfecho/a"><span class="face f1">😞</span><span class="cap">Nada satisfecho/a</span></label>
+          </div>
+        </section>
+
+        <!-- P8 -->
+        <section class="q" data-qid="q8">
+          <div class="q-head">
+            <p class="q-text">8. ¿El equipo profesional resuelve tus dudas?</p>
+            <button type="button" class="speak-btn" onclick="speak('q8')" aria-label="Escuchar pregunta 8">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt"><input type="radio" name="q8" value="5" data-label="Muy satisfecho/a"><span class="face f5">😀</span><span class="cap">Muy satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q8" value="4" data-label="Satisfecho/a"><span class="face f4">🙂</span><span class="cap">Satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q8" value="3" data-label="Regular"><span class="face f3">😐</span><span class="cap">Regular</span></label>
+            <label class="opt"><input type="radio" name="q8" value="2" data-label="Poco satisfecho/a"><span class="face f2">😕</span><span class="cap">Poco satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q8" value="1" data-label="Nada satisfecho/a"><span class="face f1">😞</span><span class="cap">Nada satisfecho/a</span></label>
+          </div>
+        </section>
+      </div>
+
+      <!-- BLOQUE 4 -->
+      <p class="section-title">Valoración general</p>
+      <div class="block b4">
+
+        <!-- P9 -->
+        <section class="q" data-qid="q9">
+          <div class="q-head">
+            <p class="q-text">9. ¿Estás satisfecho/a con Abriendo Puertas?</p>
+            <button type="button" class="speak-btn" onclick="speak('q9')" aria-label="Escuchar pregunta 9">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt"><input type="radio" name="q9" value="5" data-label="Muy satisfecho/a"><span class="face f5">😀</span><span class="cap">Muy satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q9" value="4" data-label="Satisfecho/a"><span class="face f4">🙂</span><span class="cap">Satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q9" value="3" data-label="Regular"><span class="face f3">😐</span><span class="cap">Regular</span></label>
+            <label class="opt"><input type="radio" name="q9" value="2" data-label="Poco satisfecho/a"><span class="face f2">😕</span><span class="cap">Poco satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q9" value="1" data-label="Nada satisfecho/a"><span class="face f1">😞</span><span class="cap">Nada satisfecho/a</span></label>
+          </div>
+        </section>
+
+        <!-- P10 -->
+        <section class="q" data-qid="q10">
+          <div class="q-head">
+            <p class="q-text">10. ¿Has recibido la atención que necesitabas?</p>
+            <button type="button" class="speak-btn" onclick="speak('q10')" aria-label="Escuchar pregunta 10">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt"><input type="radio" name="q10" value="5" data-label="Muy satisfecho/a"><span class="face f5">😀</span><span class="cap">Muy satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q10" value="4" data-label="Satisfecho/a"><span class="face f4">🙂</span><span class="cap">Satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q10" value="3" data-label="Regular"><span class="face f3">😐</span><span class="cap">Regular</span></label>
+            <label class="opt"><input type="radio" name="q10" value="2" data-label="Poco satisfecho/a"><span class="face f2">😕</span><span class="cap">Poco satisfecho/a</span></label>
+            <label class="opt"><input type="radio" name="q10" value="1" data-label="Nada satisfecho/a"><span class="face f1">😞</span><span class="cap">Nada satisfecho/a</span></label>
+          </div>
+        </section>
+
+        <!-- P11 - Sí / No -->
+        <section class="q" data-qid="q11">
+          <div class="q-head">
+            <p class="q-text">11. ¿Has encontrado trabajo a través de Abriendo Puertas?</p>
+            <button type="button" class="speak-btn" onclick="speak('q11')" aria-label="Escuchar pregunta 11">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt">
+              <input type="radio" name="q11" value="si" data-label="Sí">
+              <span class="face f4">🟢👍</span>
+              <span class="cap">Sí</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q11" value="no" data-label="No">
+              <span class="face f1">🔴👎</span>
+              <span class="cap">No</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- P12 - Sí / Probablemente / No -->
+        <section class="q" data-qid="q12">
+          <div class="q-head">
+            <p class="q-text">¿Recomendarías Abriendo Puertas a otras personas?</p>
+            <button type="button" class="speak-btn" onclick="speak('q12')" aria-label="Escuchar pregunta 12">🔊</button>
+          </div>
+          <div class="faces">
+            <label class="opt">
+              <input type="radio" name="q12" value="si" data-label="Sí">
+              <span class="face f4">🟢👍</span>
+              <span class="cap">Sí</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q12" value="prob" data-label="Probablemente">
+              <span class="face f3">🟡🤔</span>
+              <span class="cap">Probablemente</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="q12" value="no" data-label="No">
+              <span class="face f1">🔴👎</span>
+              <span class="cap">No</span>
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <!-- OBSERVACIONES -->
+      <section class="comments">
+        <h3>Observaciones o sugerencias</h3>
+        <textarea id="obs" placeholder="Escribe aquí tus ideas o sugerencias..."></textarea>
+      </section>
+
+      <!-- BOTONES -->
+      <div class="buttons">
+        <button class="btn pdf" type="button" onclick="validarYDescargarPDF()">Descargar encuesta en PDF</button>
+        <button class="btn csv" type="button" onclick="validarYDescargarCSV()">Descargar Excel</button>
+      </div>
+
+      <p class="agradecimiento">El equipo de Abriendo Puertas te agradece tu tiempo y sinceridad.</p>
+    </div>
+  </div>
+
+<script>
+/* Mostrar campo "Otros" */
+function mostrarOtros(){
+  const sel = document.getElementById('conociste');
+  const otros = document.getElementById('otrosTexto');
+  otros.style.display = sel.value === 'otros' ? 'block' : 'none';
+}
+
+/* LOCUCIÓN – speechSynthesis */
+function speak(qid){
+  const q = document.querySelector('.q[data-qid="'+qid+'"] .q-text');
+  if(!q) return;
+  const text = q.textContent.trim();
+  if(!text) return;
+  if(!('speechSynthesis' in window)){
+    alert("La lectura en voz alta no está disponible en este dispositivo.");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "es-ES";
+  u.rate = 0.95;
+  u.pitch = 1;
+  const voices = window.speechSynthesis.getVoices();
+  const es = voices.find(v => v.lang.startsWith("es"));
+  if(es) u.voice = es;
+  setTimeout(() => window.speechSynthesis.speak(u), 60);
+}
+
+/* Faltan respuestas */
+function encuestaIncompleta(){
+  const codigo = document.getElementById('codigo').value.trim();
+  const fecha  = document.getElementById('fecha').value.trim();
+  if(!codigo || !fecha) return true;
+
+  const nombres = ["q1","q2","q3","q4","q5","q6","q7","q8","q9","q10","q11","q12"];
+  for(const n of nombres){
+    if(!document.querySelector('input[name="'+n+'"]:checked')) return true;
+  }
+  return false;
+}
+
+/* Recoger datos para CSV */
+function recogerDatos(){
+  const d = {};
+  d.Codigo       = document.getElementById('codigo').value.trim();
+  d.Fecha        = document.getElementById('fecha').value.trim();
+  d.Anos         = document.getElementById('anios').value || "";
+  d.Meses        = document.getElementById('meses').value || "";
+  d.Conociste    = document.getElementById('conociste').value || "";
+  d.Otros        = document.getElementById('otrosTexto').value || "";
+  d.Observaciones= document.getElementById('obs').value || "";
+
+  const nombres = [
+    {name:"q1",  label:"P1"},
+    {name:"q2",  label:"P2"},
+    {name:"q3",  label:"P3"},
+    {name:"q4",  label:"P4"},
+    {name:"q5",  label:"P5"},
+    {name:"q6",  label:"P6"},
+    {name:"q7",  label:"P7"},
+    {name:"q8",  label:"P8"},
+    {name:"q9",  label:"P9"},
+    {name:"q10", label:"P10"},
+    {name:"q11", label:"P11"},
+    {name:"q12", label:"P12"},
+  ];
+
+  nombres.forEach(q => {
+    const sel = document.querySelector('input[name="'+q.name+'"]:checked');
+    const val = sel ? sel.value : "";
+    const lab = sel ? (sel.dataset.label || "") : "";
+    d[q.label] = val ? (val + " - " + lab) : "";
+  });
+
+  return d;
+}
+
+/* Descargar CSV */
+function descargarCSV(){
+  const d = recogerDatos();
+  const headers = Object.keys(d);
+  const values  = headers.map(k => d[k]);
+
+  const enc = s => `"${String(s).replace(/"/g,'""')}"`;
+  const csv = headers.join(';') + "\n" + values.map(enc).join(';');
+
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = "encuesta_abriendo_puertas.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* PDF / CSV con validación */
+function validarYDescargarPDF(){
+  if(encuestaIncompleta()){
+    alert("Por favor, completa toda la encuesta antes de descargar.");
+    return;
+  }
+  window.print();
+}
+function validarYDescargarCSV(){
+  if(encuestaIncompleta()){
+    alert("Por favor, completa toda la encuesta antes de descargar.");
+    return;
+  }
+  descargarCSV();
+}
+
+/* Precarga voces (mejora el arranque de la locución) */
+if('speechSynthesis' in window){
+  window.speechSynthesis.getVoices();
+}
+</script>
+</body>
+</html>
